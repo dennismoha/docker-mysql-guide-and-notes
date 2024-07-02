@@ -27,7 +27,7 @@
 - if you get the error `Permission denied (publickey) when SSH Access to Amazon EC2 instance [closed]` then use this [solution](https://stackoverflow.com/questions/18551556/permission-denied-publickey-when-ssh-access-to-amazon-ec2-instance)
 
 # how to copy file to mysql
-
+### 1) using the `source command`
 - Now once in the ssh
 
 - login to mysql using `mysql -u root -p`
@@ -37,3 +37,8 @@
     - `use database databasename` to use that database;
     - `source /path/to/your/data.sql` - this processes the sql data in your local disk to mysql. 
     - `show tables` - to show a list of all tables; 
+
+### 2) copy
+ 1) create a .sql file on ubuntu ssh ec2 session
+ 2) copy paste the sql code in there
+ 3) run `source` as above
