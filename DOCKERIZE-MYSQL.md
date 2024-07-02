@@ -101,6 +101,8 @@ mysql -h 127.0.0.1 -P 3306 -u db_user -p
 # When prompted, enter the password (db_password)
 ```
 
+or  alternatively connect using `mysql workbench` or `php my admin` or `docker exec -it containername bash`
+
 ### Summary
 
 By following these steps, you have containerized a MySQL database with a specific database schema and initial data. This approach allows you to deploy and manage your MySQL instance as a Docker container, ensuring consistency and portability across different environments. Adjust the Dockerfile, initialization SQL script, and Docker run command as necessary based on your specific database requirements and deployment environment.
