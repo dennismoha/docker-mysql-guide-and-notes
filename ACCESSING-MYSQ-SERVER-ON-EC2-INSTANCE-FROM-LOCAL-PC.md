@@ -1,4 +1,6 @@
-# How To access MySQL installed on an AWS instance from your local machine (localhost):
+# How To access MySQL 8.0 installed on an AWS instance from your local machine (localhost):
+
+  <b> If you are video oriented use this [youtube-video](https://youtu.be/4QrQlKtluK8)</b>
 
 ### 1. MySQL Configuration on AWS Instance
 
@@ -44,11 +46,21 @@ To grant remote access to a MySQL user from your local machine:
 
 - Grant permissions to a user (replace `<username>` and `<password>` with your desired username and password):
 
-  ```sql
-  GRANT ALL PRIVILEGES ON *.* TO 'username'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
-  ```
+![mysql8-create-user-grant-permissions](../mysql-containerization/Assets/Screenshot%20from%202024-07-03%2012-22-10.png)
+
+[copyright-source](https://stackoverflow.com/a/50197630)
+
+Alternatively  if you have a user you can grant him remote privileges as follows:
+
+![rename-user](./Assets/rename-user.png)
+ [copyright-source](https://youtu.be/4QrQlKtluK8)
 
   This grants full privileges (`ALL PRIVILEGES`) on all databases (`*.*`) to `'username'` from any host (`'%'`). Adjust the privileges and host specification as needed based on your security requirements.
+
+- To view all users use the following command:
+    ```sql
+          select user, plugin, host from mysql.user;
+    ```
 
 - Flush privileges to apply the changes:
 
@@ -61,6 +73,31 @@ To grant remote access to a MySQL user from your local machine:
   ```sql
   EXIT;
   ```
+
+### Security Considerations:
+
+- **Firewall and Security Groups**: Ensure that the MySQL port (default 3306)
+To set up inbound rules for MySQL on port 3306, typically within an AWS EC2 environment using security groups, follow these steps:
+
+1. **Identify Security Groups**: Determine the security groups associated with your MySQL database server. You can find this information in the AWS Management Console under EC2 > Instances > Instances (select your MySQL instance) > Description tab > Security groups.
+
+2. **Edit Inbound Rules**: Navigate to the EC2 dashboard in the AWS Management Console and go to the **Security Groups** section.
+
+3. **Select Security Group**: Find and select the security group that is associated with your MySQL database server.
+
+4. **Add Rule for MySQL (Port 3306)**:
+   - Click on the **Inbound rules** tab.
+   - Click on the **Edit inbound rules** button (if available) or **Add rule** button.
+   - Select **MySQL/Aurora (3306)** from the **Type** dropdown list. If you do not see MySQL/Aurora (3306), you can select **Custom TCP** and enter **3306** as the port range.
+   - For **Source**, specify the IP address range, security group ID, or security group name from which you want to allow incoming MySQL connections. 
+
+     - To allow connections from anywhere, you can use **0.0.0.0/0** (which allows all IPv4 addresses) or **::/0** (which allows all IPv6 addresses).
+     - For better security, specify the specific IP address range of your web or application servers.
+
+5. **Save Rules**: After specifying the inbound rule, click **Save rules** or **Add rule** to apply the changes.
+
+6. **Verify Connectivity**: Test the connection from your web or application server to the MySQL database server to ensure that the inbound rule is correctly configured and the connection can be established.
+
 
 ### 3. Access MySQL from Localhost
 
@@ -84,6 +121,4 @@ mysql -u remote_user -h 123.456.789.123 -p
 
 Enter the MySQL user password when prompted.
 
-### Security Considerations:
 
-- **Firewall and Security Groups**: Ensure that the MySQL port (default 3306)
